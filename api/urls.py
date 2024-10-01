@@ -4,6 +4,7 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 from rest_framework.routers import DefaultRouter
 
+from auth_app.authentication import CustomJWTStatelessUserAuthentication
 from .views import BreedViewSet, CatViewSet
 
 router = DefaultRouter(trailing_slash=True)
@@ -21,15 +22,14 @@ schema_view = get_schema_view(
         license=openapi.License(name="BSD License"),
     ),
     public=True,
-    permission_classes=[permissions.AllowAny, ],
+    permission_classes=[permissions.IsAuthenticatedOrReadOnly, ],
+    authentication_classes=[CustomJWTStatelessUserAuthentication, ],
 )
 
 urlpatterns = [
     # API routes
     path('', include(router.urls)),
     # Swagger docs routes
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0),
+    path('docs/', schema_view.with_ui('swagger', cache_timeout=0),
          name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0),
-         name='schema-redoc'),
 ]

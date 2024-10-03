@@ -80,7 +80,7 @@ DATABASES = {
         'NAME': os.environ.get('DB_NAME'),
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': 'localhost',
+        'HOST': 'db',
         'PORT': 5432,
     }
 }
@@ -117,7 +117,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -152,7 +153,9 @@ SIMPLE_JWT = {
     'TOKEN_TYPE_CLAIM': 'token_type',
 }
 
+# Swagger schema settings
 SWAGGER_SETTINGS = {
+    'DEFAULT_API_URL': 'http://localhost/api',
     'SECURITY_DEFINITIONS': {
         'Bearer': {
             'type': 'apiKey',

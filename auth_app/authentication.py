@@ -6,7 +6,23 @@ from rest_framework_simplejwt.models import TokenUser
 
 
 class CustomJWTStatelessUserAuthentication(JWTStatelessUserAuthentication):
+    """
+    Класс аутентификации, использующий JWT с проверкой на существование пользователя.
+    Если пользователь не найден, выбрасывается исключение InvalidToken.
+    """
+
     def authenticate(self, request):
+        """
+        Переопределенный метод аутентификации,
+        который проверяет, существует ли пользователь,
+        связанный с классом TokenUser.
+        Если пользователь не найден, выбрасывается InvalidToken.
+
+        Возвращает:
+            tuple: Кортеж, содержащий пользователя и токен,
+            если аутентификация успешна.
+            Иначе возвращает None.
+        """
         authenticated_user = super().authenticate(request)
         if authenticated_user is None:
             return None
@@ -17,6 +33,6 @@ class CustomJWTStatelessUserAuthentication(JWTStatelessUserAuthentication):
             try:
                 user = User.objects.get(id=user.id)
             except User.DoesNotExist:
-                raise InvalidToken('User not found')
+                raise InvalidToken('Пользователь не найден')
 
         return user, token

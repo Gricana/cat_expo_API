@@ -1,0 +1,38 @@
+services:
+  web:
+    build: .
+    entrypoint: /expo/dbconf/entrypoint.sh
+    volumes:
+      - .:/expo
+      - ./dbconf/wait-for-it.sh:/expo/dbconf/wait-for-it.sh
+      - ./dbconf/dump.sql:/expo/dbconf/dump.sql
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    env_file: dbconf/db.env
+
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./dbconf/init.sh:/docker-entrypoint-initdb.d/init.sh
+    env_file: dbconf/db.env
+
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./static:/static
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+
+
+volumes:
+  postgres_data:

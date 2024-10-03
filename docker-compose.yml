@@ -12,6 +12,15 @@ services:
       - db
     env_file: dbconf/db.env
 
+  test:
+    build: .
+    command: pytest --disable-warnings
+    volumes:
+      - .:/expo
+    depends_on:
+      - db
+    env_file: dbconf/db.env
+
   db:
     image: postgres:13
     environment:

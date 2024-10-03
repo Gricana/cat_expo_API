@@ -1,3 +1,6 @@
 /api/migrations/**
 .venv
 /api/migrations/
+/static/admin/
+/static/drf-yasg/
+/static/rest_framework/

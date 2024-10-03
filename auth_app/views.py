@@ -5,8 +5,14 @@ from .serializers import UserSerializer
 
 
 class RegisterView(generics.CreateAPIView):
+    """
+    Представление для регистрации нового пользователя.
+    """
     serializer_class = UserSerializer
     permission_classes = (AllowAny,)
 
-    def get_view_description(self, html=False):
+    def get_view_description(self, html: bool = False) -> str:
+        """
+        Метод для предоставления пользовательского описания действия.
+        """
         return 'Создание нового пользователя в системе'

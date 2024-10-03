@@ -1,4 +1,7 @@
-operation_descriptions = {
+from typing import Dict
+
+# Описание операций для отображения в документации API (Swagger)
+operation_descriptions: Dict[str, str] = {
     'list': "Получение списка всех котов",
     'retrieve': "Получение информации о конкретном коте",
     'create': "Добавление нового кота",
